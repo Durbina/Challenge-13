@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" href="jquery.js"></script>
+</head>
+<body>
+	<script>
+	//this function will analyze a word and return
+	//an object containing a property for each letter
+	//and its frequency
+	var wordAnalyzer = function (word) {
+		//to split the word into an array of letters and sort it
+		//so the repeated letters are grouped together
+		var arrayOfSortedLetters = word.split("").sort();
+		//an empty object to hold the letters and their frequencies
+		var lettersInWord = {};
+		//to loop through the array of letters
+		for (var x = 0; x < arrayOfSortedLetters.length; x += moveForward) {
+			//moveForward will be counted up for each repeated letter,
+			//so that the repeated letters can be skipped in the loop
+			var moveForward = 1;
+			//to count each repeated letter
+			var countOfLetters = 1;
+			//i will be added to for every repeated letter, which
+			//will be used to skip the repeated letters in the 
+			//while loop
+			var i = 1;
+			//this will loop through the subsequent element in the array,
+			//adding one as long as it is equal to the current element 
+			while (arrayOfSortedLetters[x] === arrayOfSortedLetters[x + i]) {
+				countOfLetters++;
+				i++;
+				moveForward++;
+			};
+		//this will add a property to the object containing a letter and its frequency
+		lettersInWord[arrayOfSortedLetters[x]] = countOfLetters;
+		};
+		return lettersInWord
+	};
+	
+	
+	//this is to determine the highest frequency letter in a word
+	//I will use that number to isolate the word containing
+	//it later
+	var valueAnalyzer = function (arrayOfObjects) {
+		var holder = [];
+		for (var i = 0; i < arrayOfObjects.length; i++){
+			for (var x in arrayOfObjects[i]) {
+				holder.push(arrayOfObjects[i][x]);
+			};
+		};
+		//to sort the array of frequencies
+		var frequencies = holder.sort(function (a,b) {
+			return b-a
+		});
+		//hopefully, to determine the highest frequency a letter 
+		//appears in a word, and if there are other instances of that frequency
+		//in the same word or other words
+		var i = 1;
+		var numOfOccurrences = 1;
+		while (frequencies[0] === frequencies[0 + i]) {
+			numOfOccurrences++;
+			i++;
+		};
+		
+		//console.log("The highest frequency word appeared " + frequencies[0] + " times" + " in " + numOfOccurrences + " instances." );
+		return frequencies[0];
+	};
+
+
+
+	string = "I attribute my success to this";
+	var splitString = string.split(" ");
+	//to map wordAnalyzer to each word in a sentence,
+	//creating an array of objects with analysis
+	var objects = splitString.map(function (word) {
+		return wordAnalyzer(word); 
+	});
+	//frequencies to search for in each object property
+	var frequenciesToSearch = valueAnalyzer(objects);
+	
+	var results = function (objects) {
+		var holder = [];
+		for (var x = 0; x < objects.length; x++) {
+			for (var y in objects[x]) {
+				if (objects[x][y] === frequenciesToSearch) {
+					console.log(objects[x]);
+				}
+			}
+		}
+		return holder;
+	}
+	
+	//console.log(objects)
+	console.log(frequenciesToSearch);
+	//console.log(results(objects))
+		
+	
+	</script>
+</body>
+</html>
